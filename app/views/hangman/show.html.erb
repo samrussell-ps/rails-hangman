@@ -1,0 +1,14 @@
+<h1>Hangman#show</h1>
+<p>Find me in app/views/hangman/show.html.erb</p>
+<p>Progress:</p>
+<p><%= @hangman.word_progress.map { |letter| letter || '_' }.join(' ') %></p>
+<p>Lives left: <%= @hangman.lives_left %></p>
+<p>Bad guesses:</p>
+<p><%= @hangman.incorrect_guesses.join(' ') %></p>
+<div>
+  <%= form_for :guess, url: {action: 'create', controller: 'guess'} do |form| %>
+    Letter: <%= form.text_field :letter %>
+    <%= form.hidden_field :hangman_id, value: @hangman.id %>
+    <%= form.submit %>
+  <% end %>
+</div>
