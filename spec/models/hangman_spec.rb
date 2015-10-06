@@ -1,7 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Hangman, type: :model do
-  let(:hangman) { Hangman.create!(word: 'TELEPHONE') }
+  let(:letters_to_guess) { [] }
+  let(:word_to_be_guessed) { 'TELEPHONE' }
+  let(:guesses_to_win) { [ 'T', 'E', 'L', 'P', 'H', 'O', 'N' ] }
+  let(:guesses_to_lose) { [ 'Z', 'X', 'C', 'V', 'B', 'A', 'S', 'D', 'F' ] }
+  let(:initial_lives) { 9 }
+  let(:hangman) { Hangman.create!(word: word_to_be_guessed) }
+
   describe '#word_progress' do
     subject(:word_progress) { hangman.word_progress }
 
@@ -11,7 +17,6 @@ RSpec.describe Hangman, type: :model do
 
     it 'uncovers "E" when we guess "E"' do
       hangman.guesses.create!(letter: 'E')
-      hangman.reload
       expect(word_progress).to eq([nil, 'E', nil, 'E', nil, nil, nil, nil, 'E'])
     end
 

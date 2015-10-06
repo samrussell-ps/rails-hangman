@@ -16,6 +16,7 @@ group :development, :test do
   gem 'spring'
   gem 'sqlite3'
   gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-activemodel-mocks'
   gem 'guard-rspec', require: false
   gem 'codeclimate-test-reporter'
 end

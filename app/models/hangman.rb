@@ -16,7 +16,7 @@ class Hangman < ActiveRecord::Base
   end
 
   def guessed_letters
-    self.guesses.map { |guess| guess.letter }
+    @guessed_letters ||= self.guesses.map { |guess| guess.letter }
   end
 
   def incorrect_guesses
