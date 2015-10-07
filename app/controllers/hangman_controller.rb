@@ -1,2 +1,0 @@
-class HangmanController < ApplicationController
-end
