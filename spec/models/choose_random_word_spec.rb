@@ -6,6 +6,7 @@ RSpec.describe ChooseRandomWord do
   describe '#next_word' do
     subject(:next_word) { choose_random_word.next_word }
 
+    # TODO test for randomness
     it { is_expected.to match(/\A[[:alpha:]]+\Z/) }
   end
 end

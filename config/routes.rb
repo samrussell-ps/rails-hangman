@@ -2,8 +2,9 @@ Rails.application.routes.draw do
 
   #get 'guess/new'
   #get 'hangman/new'
-  resources :hangman, only: [:new, :show]
-  resources :guess, only: [:create]
+  resources :game, only: [:new, :show, :create] do
+    resources :guess, only: [:create]
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

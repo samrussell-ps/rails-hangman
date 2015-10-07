@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  has_many :guesses
+  has_many :guesses, dependent: :destroy
 
   validates :word, presence: true
   validates :word, format: {
