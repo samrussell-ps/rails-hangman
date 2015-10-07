@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe NewGuess do
+RSpec.describe MakeGuess do
   let(:letter) { nil }
   let(:game) { Game.create!(word: 'TELEPHONE') }
-  let(:new_guess) { NewGuess.new(game, letter) }
+  let(:make_guess) { MakeGuess.new(game, letter) }
 
   describe '#call' do
-    subject { new_guess.call }
+    subject { make_guess.call }
 
     context 'with an uppercase letter' do
       let(:letter) { 'A' }
