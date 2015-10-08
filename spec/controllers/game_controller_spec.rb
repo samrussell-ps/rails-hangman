@@ -27,15 +27,15 @@ RSpec.describe GameController, type: :controller do
     it { is_expected.to render_template(:new) }
   end
 
-  describe 'GET /game/create' do
+  describe 'POST /game' do
     subject { response }
 
     render_views
 
     before do
-      put :create # stuff
+      post :create # stuff
     end
 
-    it { is_expected.to redirect_to action: :show, id: 1 }
+    it { is_expected.to redirect_to action: :show, id: Game.all[-1].id }
   end
 end
