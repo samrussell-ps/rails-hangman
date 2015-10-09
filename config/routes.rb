@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   #get 'guess/new'
   #get 'hangman/new'
-  resources :game, only: [:new, :show, :create] do
+  resources :game, only: [:new, :show, :create, :index] do
     resources :guess, only: [:create]
   end
 

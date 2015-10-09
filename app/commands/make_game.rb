@@ -3,6 +3,7 @@ class MakeGame
   end
 
   def call
-    Game.create!(word: 'WORD')
+    word = ChooseRandomWord.instance.next_word
+    Game.create!(word: word.upcase)
   end
 end

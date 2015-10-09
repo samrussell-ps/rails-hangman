@@ -13,7 +13,6 @@ RSpec.describe MakeGame do
     game2 = MakeGame.new.call
     game3 = MakeGame.new.call
 
-    # rewrite with aggregated specs
-    expect(game1 != game2 || game2 != game3 || game3 != game1).to be true
+    expect(game1.word).to_not eq(game2.word) or eq(game3.word)
   end
 end

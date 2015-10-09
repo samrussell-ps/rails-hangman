@@ -1,7 +1,18 @@
 class GameController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  before_filter :navbar
 
   def show
+    @active_page = ActivePage.new(:resume)
+    @game = Game.find(params[:id])
+    # TODO very not DRY, find a nicer way to do this
+    @word_progress = WordProgress.new(@game).call
+    @bad_guesses = BadGuesses.new(@game).call
+    @lives_left = LivesLeft.new(@game).call
+  end
+
+  def index
+    @games = Game.all
+    @active_page = ActivePage.new(:home)
   end
 
   def new
@@ -17,5 +28,12 @@ class GameController < ApplicationController
     # render :new *this will re-render if there are issues*
     # end
     redirect_to Game.create!( {word: 'WAT'} )
+  end
+
+  private 
+
+  def navbar
+    @active_page = ActivePage.new()
+    @first_five_games = Game.order(id: :desc).limit(5)
   end
 end

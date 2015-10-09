@@ -1,0 +1,9 @@
+<h1>Games</h1>
+
+<table>
+  <% @games.each do |game| %>
+    <tr>
+      <td><%= link_to "Game #{game.id}", game %></td>
+    </tr>
+  <% end %>
+</table>
