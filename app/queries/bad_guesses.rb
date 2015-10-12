@@ -4,8 +4,6 @@ class BadGuesses
   end
 
   def call
-    # TODO: rewrite
-    # horrible, but Enumerable.count was breaking :/
-    @game.guesses.map{ |guess| guess.letter unless @game.word.include?(guess.letter) }.compact
+    @game.guesses.map{ |guess| guess.letter if @game.word.exclude?(guess.letter) }.compact
   end
 end

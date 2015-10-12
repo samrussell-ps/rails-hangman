@@ -22,7 +22,7 @@ class GameComplete
   end
 
   def game_won?
-    !WordProgress.new(@game).call.include?(nil)
+    WordProgress.new(@game).call.exclude?(nil)
   end
 
   def game_lost?

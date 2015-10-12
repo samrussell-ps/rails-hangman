@@ -14,6 +14,8 @@ RSpec.describe LivesLeft do
 
   context 'with a new game with one bad guess' do
     before do
+      # TODO get rid of each, use :letter
+      # TODO get to 0
       ['A'].each { |letter| game.guesses.create!(letter: letter) }
     end
 

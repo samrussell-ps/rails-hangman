@@ -5,7 +5,22 @@ class LetterHasBeenGuessed
   end
 
   def call
-    @game.guesses.any?{ |guess| guess.letter == @letter }
+    @game.guesses.pluck(:letter).include? @letter
   end
 end
+
+#TODO delete this and think about it
+#foo = :foo
+#
+#&foo
+#
+#foo.to_proc
+#
+#class Symbol
+#  def to_proc
+#    return Proc.new do |object|
+#      object.send(self)
+#    end
+#  end
+#end
 

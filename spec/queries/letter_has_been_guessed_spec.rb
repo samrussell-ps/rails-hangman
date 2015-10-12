@@ -9,34 +9,36 @@ RSpec.describe LetterHasBeenGuessed do
   it { is_expected.to be_a_kind_of(TrueClass).or be_a_kind_of(FalseClass) }
 
   context 'unguessed correct letter' do
-    let(:letter) {'O'}
+    let(:letter) { 'O' }
     
-    it { is_expected.to eq(false) }
+    it { is_expected.to be false }
   end
 
   context 'guessed correct letter' do
-    let(:letter) {'O'}
+    let(:letter) { 'O' }
 
     before do
+      # TODO refactor, doesn't need .each
+      # TODO: use :letter
       ['O'].each { |letter| game.guesses.create!(letter: letter) }
     end
     
-    it { is_expected.to eq(true) }
+    it { is_expected.to be true }
   end
 
   context 'unguessed incorrect letter' do
-    let(:letter) {'A'}
+    let(:letter) { 'A' }
     
-    it { is_expected.to eq(false) }
+    it { is_expected.to be false }
   end
 
   context 'guessed correct letter' do
-    let(:letter) {'A'}
+    let(:letter) { 'A' }
 
     before do
       ['A'].each { |letter| game.guesses.create!(letter: letter) }
     end
     
-    it { is_expected.to eq(true) }
+    it { is_expected.to be true }
   end
 end

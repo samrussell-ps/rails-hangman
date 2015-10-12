@@ -6,7 +6,6 @@ RSpec.describe GameComplete do
   let(:guesses_to_win) { [ 'W', 'O', 'R', 'D' ] }
   let(:guesses_to_lose) { [ 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'A', 'S' ] }
 
-  # TODO: more of these for #result
   describe '#result' do
     subject { game_complete.result }
 

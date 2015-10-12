@@ -13,6 +13,8 @@ RSpec.describe BadGuesses do
 
   context 'with a new game with one bad guess' do
     before do
+      # TODO: refactor without .each
+      # TODO: use :good_guess and :bad_guess
       ['A'].each { |letter| game.guesses.create!(letter: letter) }
     end
 

@@ -11,6 +11,7 @@ class WordProgress
 
   private
 
+  # TODO: use LetterHasBeenGuessed
   def letter_has_been_guessed?(letter)
     @game.guesses.any? { |guess| guess.letter == letter }
   end
