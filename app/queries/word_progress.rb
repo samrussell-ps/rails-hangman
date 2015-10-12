@@ -5,9 +5,13 @@ class WordProgress
 
   def call
     @game.word.chars.map do |letter|
-      letter if @game.guesses.any? do |guess|
-        guess.letter == letter
-      end
+      letter if letter_has_been_guessed?(letter)
     end
+  end
+
+  private
+
+  def letter_has_been_guessed?(letter)
+    @game.guesses.any? { |guess| guess.letter == letter }
   end
 end

@@ -27,7 +27,7 @@ class GameController < ApplicationController
     # else
     # render :new *this will re-render if there are issues*
     # end
-    redirect_to Game.create!( {word: 'WAT'} )
+    redirect_to MakeGame.new.call
   end
 
   private 

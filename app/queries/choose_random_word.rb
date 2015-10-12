@@ -7,7 +7,7 @@ class ChooseRandomWord
   include Singleton
 
   def next_word
-    words.shuffle.first
+    words.sample
   end
 
   private

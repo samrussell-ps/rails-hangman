@@ -8,6 +8,12 @@ RSpec.describe MakeGuess do
   let(:guesses_to_lose) { [ 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'A', 'S' ] }
   subject { make_guess.call }
 
+  context 'with nil letter' do
+    let(:letter) { nil }
+
+    it { is_expected.to be false}
+  end
+
   context 'with an uppercase letter' do
     let(:letter) { 'A' }
 
@@ -53,6 +59,16 @@ RSpec.describe MakeGuess do
 
     before do
       guesses_to_lose.each { |letter| game.guesses.create!(letter: letter) }
+    end
+
+    it { is_expected.to be false }
+  end
+  
+  context 'when the letter has already been guessed' do
+    let(:letter) { 'A' }
+
+    before do
+      ['A'].each { |letter| game.guesses.create!(letter: letter) }
     end
 
     it { is_expected.to be false }

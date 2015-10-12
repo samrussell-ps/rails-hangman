@@ -4,15 +4,18 @@ class GameComplete
   end
 
   def call
-    { finished: game_finished?,
-      status: game_status }
+    game_finished?
+  end
+
+  def result
+    if game_finished?
+      game_won? ? :won : :lost
+    else
+      :running
+    end
   end
 
   private
-
-  def game_status
-    game_won? ? :won : :lost if game_finished?
-  end
 
   def game_finished?
     game_won? || game_lost?

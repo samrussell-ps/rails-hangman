@@ -5,10 +5,10 @@ RSpec.describe BadGuesses do
   let(:bad_guesses) { BadGuesses.new(game) }
   subject { bad_guesses.call }
 
-  it { is_expected.to be_a_kind_of(Integer) }
+  it { is_expected.to be_a_kind_of(Array) }
 
   context 'with a new game with no bad guesses' do
-    it { is_expected.to eq(0) }
+    it { is_expected.to eq([]) }
   end
 
   context 'with a new game with one bad guess' do
@@ -16,7 +16,7 @@ RSpec.describe BadGuesses do
       ['A'].each { |letter| game.guesses.create!(letter: letter) }
     end
 
-    it { is_expected.to eq(1) }
+    it { is_expected.to eq(['A']) }
   end
 
   context 'with a new game with one correct guess' do
@@ -24,6 +24,6 @@ RSpec.describe BadGuesses do
       ['O'].each { |letter| game.guesses.create!(letter: letter) }
     end
 
-    it { is_expected.to eq(0) }
+    it { is_expected.to eq([]) }
   end
 end
