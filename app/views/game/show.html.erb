@@ -3,45 +3,53 @@
 #keyboard-container {
 font: 71%/1.5 Verdana, Sans-Serif;
 background: #eee;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
 }
 #keyboard {
 margin: 0;
 padding: 0;
 list-style: none;
 }
-	#keyboard li {
-	float: left;
-	margin: 0 5px 5px 0;
-	//width: 40px;
-        width: 9%;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	background: #fff;
-	border: 1px solid #f9f9f9;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	}
-		.capslock, .tab, .left-shift {
-		clear: left;
+                .letter {
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                float: left;
+                margin-left: 0.5%;
+                margin-right: 0.5%;
+                // TODO: these should be relative
+                margin-top: 2px;
+                margin-bottom: 2px;
+                width: 9%;
+                background: #fff;
+                border: 1px solid #f9f9f9;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                }
+                .topfiller-2 {
+                  height: 2px;
+                }
+                .leftfiller-0 {
+                clear: both;
+                float: left;
+                margin-left: 0px;
+                width: 0px;
 		}
-			#keyboard .tab, #keyboard .delete {
-			width: 70px;
-			}
-			#keyboard .capslock {
-			width: 80px;
-			}
-			#keyboard .return {
-			width: 77px;
-			}
-			#keyboard .left-shift {
-			width: 95px;
-			}
-			#keyboard .right-shift {
-			width: 109px;
-			}
-		.lastitem {
-		margin-right: 0;
+                .leftfiller-5 {
+                clear: both;
+                float: left;
+                margin: 0 0.5% 5px 0;
+                width: 4.5%;
+		}
+                .leftfiller-10 {
+                clear: both;
+                float: left;
+                margin: 0 1% 5px 0;
+                width: 9%;
+		}
+                .rightfiller {
+                height: 44px;
 		}
 		.uppercase {
 		text-transform: uppercase;
@@ -52,7 +60,12 @@ list-style: none;
 		}
 		.on {
 		display: none;
-		}
+                }
+                .filler {
+                width: 5%;
+                margin-left: 0;
+                margin-right: 0;
+                }
 		#keyboard li:hover {
 		position: relative;
 		top: 1px;
@@ -78,37 +91,45 @@ $(function(){
 
   //-->
 </script>
-<p>Word progress: <%= @word_progress %></p>
-<p>Bad guesses: <%= @bad_guesses %></p>
+<!-- TODO: should be done in presenter -->
+<p>Word progress: <%= @word_progress.map { |char| char ? char : '_'}.join ' ' %></p>
+<p>Bad guesses: <%= @bad_guesses.join ' ' %></p>
 <p>Lives left: <%= @lives_left %></p>
 <%= render "form" %>
 <div id="keyboard-container">
-	<ul id="keyboard">
-		<li class="letter">q</li>
-		<li class="letter">w</li>
-		<li class="letter">e</li>
-		<li class="letter">r</li>
-		<li class="letter">t</li>
-		<li class="letter">y</li>
-		<li class="letter">u</li>
-		<li class="letter">i</li>
-		<li class="letter">o</li>
-		<li class="letter">p</li>
-		<li class="letter">a</li>
-		<li class="letter">s</li>
-		<li class="letter">d</li>
-		<li class="letter">f</li>
-		<li class="letter">g</li>
-		<li class="letter">h</li>
-		<li class="letter">j</li>
-		<li class="letter">k</li>
-		<li class="letter">l</li>
-		<li class="letter">z</li>
-		<li class="letter">x</li>
-		<li class="letter">c</li>
-		<li class="letter">v</li>
-		<li class="letter">b</li>
-		<li class="letter">n</li>
-		<li class="letter">m</li>
+  <ul id="keyboard">
+    <li class="topfiller-2"></li>
+                <li class="leftfiller-0"></li>
+		<li class="letter">Q</li>
+		<li class="letter">W</li>
+		<li class="letter">E</li>
+		<li class="letter">R</li>
+		<li class="letter">T</li>
+		<li class="letter">Y</li>
+		<li class="letter">U</li>
+		<li class="letter">I</li>
+		<li class="letter">O</li>
+                <li class="letter">P</li>
+                <li class="rightfiller"></li>
+                <li class="leftfiller-5"></li>
+		<li class="letter">A</li>
+		<li class="letter">S</li>
+		<li class="letter">D</li>
+		<li class="letter">F</li>
+		<li class="letter">G</li>
+		<li class="letter">H</li>
+		<li class="letter">J</li>
+		<li class="letter">K</li>
+		<li class="letter">L</li>
+                <li class="rightfiller"></li>
+                <li class="leftfiller-10"></li>
+		<li class="letter">Z</li>
+		<li class="letter">X</li>
+		<li class="letter">C</li>
+		<li class="letter">V</li>
+		<li class="letter">B</li>
+		<li class="letter">N</li>
+		<li class="letter">M</li>
+                <li class="rightfiller"></li>
               </ul>
             </div>
