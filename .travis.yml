@@ -1,7 +1,11 @@
 language: ruby
 rvm:
   - 2.2.3
-script: rspec spec
+before-script
+  - rake db:drop
+  - rake db:setup
+script:
+  - rspec spec
 bundler_args: --without production
 addons:
   code_climate:
