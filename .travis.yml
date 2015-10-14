@@ -1,7 +1,7 @@
 language: ruby
 rvm:
   - 2.2.3
-before-script
+before_script:
   - rake db:drop
   - rake db:setup
 script:
