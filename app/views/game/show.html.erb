@@ -1,10 +1,14 @@
 <style>
   <!--
 #keyboard-container {
-font: 71%/1.5 Verdana, Sans-Serif;
+  font: 71%/1.5 Verdana, Sans-Serif;
+  font-size: 6vmin;
 background: #eee;
 -moz-border-radius: 5px;
 -webkit-border-radius: 5px;
+width:100%;
+position:fixed;
+bottom:0;
 }
 #keyboard {
 margin: 0;
@@ -96,6 +100,8 @@ $(function(){
 <p>Bad guesses: <%= @bad_guesses.join ' ' %></p>
 <p>Lives left: <%= @lives_left %></p>
 <%= render "form" %>
+
+<% content_for :body do %>
 <div id="keyboard-container">
   <ul id="keyboard">
     <li class="topfiller-2"></li>
@@ -133,3 +139,4 @@ $(function(){
                 <li class="rightfiller"></li>
               </ul>
             </div>
+          <% end %>
