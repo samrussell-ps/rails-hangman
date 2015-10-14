@@ -17,7 +17,7 @@ words = response.body.split("\r\n")
 ActiveRecord::Base.transaction do
   #words.each { |word| Word.find_or_create_by(word: word) }
   #words.each { |word| Word.create!(word: word) }
-  words.each do |word|
+  words.shuffle[0...8000].each do |word|
     safe_word = word.gsub(/[^a-zA-Z]/, '')
     Word.connection.execute "INSERT INTO words (word, created_at, updated_at) values ('#{safe_word}', '#{DateTime.now()}', '#{DateTime.now()}')"
   end
