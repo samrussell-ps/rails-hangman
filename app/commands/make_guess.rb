@@ -14,6 +14,6 @@ class MakeGuess
     # TODO test for exception with create! instead
     # this shouldn't be called so error makes more sense
     # @game.guesses.build ....
-    Guess.new(game: @game, letter: uppercase_letter).save
+    Guess.create!(game: @game, letter: uppercase_letter)
   end
 end

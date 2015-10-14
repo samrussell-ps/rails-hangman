@@ -59,8 +59,8 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
 
   # Rails extra
-  watch(%r{^spec/queries/.+_spec\.rb$})
-  watch(%r{^app/queries/(.+)\.rb$}) { |m| "#{rspec.spec_dir}/queries/#{m[1]}_spec.rb" }
+  #watch(%r{^spec/queries/.+_spec\.rb$})
+  #watch(%r{^app/queries/(.+)\.rb$}) { |m| "#{rspec.spec_dir}/queries/#{m[1]}_spec.rb" }
 
   # Capybara features specs
   watch(rails.view_dirs)     { |m| rspec.spec.("features/#{m[1]}") }
