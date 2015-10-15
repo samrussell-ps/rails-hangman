@@ -9,6 +9,7 @@ class GameController < ApplicationController
     @word_progress = WordProgress.new(@game).call
     @bad_guesses = BadGuesses.new(@game).call
     @lives_left = LivesLeft.new(@game).call
+    @game_status = GameComplete.new(@game).result
   end
 
   def index
