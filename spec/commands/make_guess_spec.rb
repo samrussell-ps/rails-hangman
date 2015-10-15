@@ -1,86 +1,74 @@
 require 'rails_helper'
 
 RSpec.describe MakeGuess do
-  let(:letter) { nil }
+  let(:guess) { nil }
   let(:game) { Game.create!(word: 'WORD') }
-  let(:make_guess) { MakeGuess.new(game, letter) }
-  let(:guesses_to_win) { [ 'W', 'O', 'R', 'D' ] }
-  let(:guesses_to_lose) { [ 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'A', 'S' ] }
-  subject { make_guess.call }
+  let(:game_id) { game.id }
+  let(:make_guess) { MakeGuess.new(game_id, guess) }
+  let(:true_service) { Proc.new { true } }
+  let(:false_service) { Proc.new { false } }
+  subject(:call) { make_guess.call }
 
-  context 'with nil letter' do
-    let(:letter) { nil }
-    subject { Proc.new { make_guess.call } }
+  context 'with valid data and state' do
+    let(:fake_guess) { instance_double(Guess) }
 
-    it { is_expected.to raise_error ActiveRecord::RecordInvalid }
-  end
+    it 'shout :guess_created with a new guess' do
+      allow(Game).to receive(:find_by).and_return(game)
+      allow(GuessIsValid).to receive(:new).and_return(true_service)
+      allow(GameComplete).to receive(:new).and_return(false_service)
+      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+      expect(Guess).to receive(:create!).with(hash_including(game: game, letter: anything)).and_return(fake_guess)
+      expect(make_guess).to receive(:publish!).with(:guess_created, fake_guess)
 
-  context 'with an uppercase letter' do
-    let(:letter) { 'A' }
-
-    it { is_expected.to be_a_kind_of(Guess) }
-  end
-
-  context 'with a lowercase letter' do
-    let(:letter) { 'a' }
-
-    it { is_expected.to be_a_kind_of(Guess) }
-  end
-
-  context 'with multiple characters' do
-    let(:letter) { 'abc' }
-
-    subject { Proc.new { make_guess.call } }
-
-    it { is_expected.to raise_error ActiveRecord::RecordInvalid }
-  end
-
-  context 'with a number' do
-    let(:letter) { '2' }
-
-    subject { Proc.new { make_guess.call } }
-
-    it { is_expected.to raise_error ActiveRecord::RecordInvalid }
-  end
-
-  context 'with a symbol' do
-    let(:letter) { '%' }
-
-    subject { Proc.new { make_guess.call } }
-
-    it { is_expected.to raise_error ActiveRecord::RecordInvalid }
-  end
-
-  context 'when the game is won' do
-    let(:letter) { 'A' }
-
-    before do
-      guesses_to_win.each { |letter| game.guesses.create!(letter: letter) }
+      make_guess.call
     end
-
-    # TODO: use shout here
-    it { is_expected.to be false }
   end
 
-  context 'when the game is lost' do
-    let(:letter) { 'A' }
+  context 'with a non_existent game' do
+    it 'shouts :game_does_not_exist' do
+      allow(Game).to receive(:find_by).and_return(nil)
+      allow(GuessIsValid).to receive(:new).and_return(false_service)
+      allow(GameComplete).to receive(:new).and_return(false_service)
+      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+      expect(make_guess).to receive(:publish!).with(:game_does_not_exist)
 
-    before do
-      guesses_to_lose.each { |letter| game.guesses.create!(letter: letter) }
+      make_guess.call
     end
+  end
 
-    # TODO: use shout here
-    it { is_expected.to be false }
+  context 'with an invalid guess' do
+    it 'shouts :invalid_guess' do
+      allow(Game).to receive(:find_by).and_return(instance_double(Game))
+      allow(GuessIsValid).to receive(:new).and_return(false_service)
+      allow(GameComplete).to receive(:new).and_return(false_service)
+      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+      expect(make_guess).to receive(:publish!).with(:invalid_guess)
+
+      make_guess.call
+    end
+  end
+
+  context 'when the game is complete' do
+    it 'shouts :game_complete' do
+      allow(Game).to receive(:find_by).and_return(instance_double(Game))
+      allow(GuessIsValid).to receive(:new).and_return(true_service)
+      allow(GameComplete).to receive(:new).and_return(true_service)
+      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+      expect(make_guess).to receive(:publish!).with(:game_complete)
+
+      make_guess.call
+    end
   end
   
   context 'when the letter has already been guessed' do
-    let(:letter) { 'A' }
+    it 'shouts :letter_has_been_guessed' do
+      allow(Game).to receive(:find_by).and_return(instance_double(Game))
+      allow(GuessIsValid).to receive(:new).and_return(true_service)
+      allow(GameComplete).to receive(:new).and_return(false_service)
+      allow(LetterHasBeenGuessed).to receive(:new).and_return(true_service)
+      expect(make_guess).to receive(:publish!).with(:letter_has_been_guessed)
 
-    before do
-      ['A'].each { |letter| game.guesses.create!(letter: letter) }
+      make_guess.call
     end
-
-    # TODO: use shout here
-    it { is_expected.to be false }
   end
 end

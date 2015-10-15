@@ -127,6 +127,9 @@ $(function(){
   //-->
 </script>
 <!-- TODO: should be done in presenter -->
+<% if flash[:alert] %>
+  <div class="alert alert-danger"><%= flash[:alert] %></div>
+<% end %>
 <p>Word progress: <%= @word_progress.map { |char| char ? char : '_'}.join ' ' %></p>
 <p>Bad guesses: <%= @bad_guesses.join ' ' %></p>
 <p>Lives left: <%= @lives_left %></p>

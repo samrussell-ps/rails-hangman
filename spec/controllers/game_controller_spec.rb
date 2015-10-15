@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GameController, type: :controller do
   let(:game_controller) { GameController.new }
+  let(:game) { Game.create!(word: 'BUCKET') }
 
   # GET /game
   describe '#index' do
@@ -23,7 +24,7 @@ RSpec.describe GameController, type: :controller do
     render_views
 
     before do
-      get :show, id: 1
+      get :show, id: game.id
     end
 
     it { is_expected.to render_template(:show) }

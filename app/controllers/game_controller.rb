@@ -2,6 +2,7 @@ class GameController < ApplicationController
   before_filter :navbar
 
   def show
+    # TODO: put this somewhere else
     @active_page = ActivePage.new(:resume)
     @game = Game.find(params[:id])
     # TODO very not DRY, find a nicer way to do this
