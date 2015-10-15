@@ -3,7 +3,6 @@ class GameController < ApplicationController
 
   def show
     # TODO: put this somewhere else
-    @active_page = ActivePage.new(:resume)
     @game = Game.find(params[:id])
     # TODO very not DRY, find a nicer way to do this
     @word_progress = WordProgress.new(@game).call
@@ -14,7 +13,6 @@ class GameController < ApplicationController
 
   def index
     @games = Game.all
-    @active_page = ActivePage.new(:home)
   end
 
   def new
@@ -27,7 +25,6 @@ class GameController < ApplicationController
   private 
 
   def navbar
-    @active_page = ActivePage.new()
     @first_five_games = Game.order(id: :desc).limit(5)
   end
 end
