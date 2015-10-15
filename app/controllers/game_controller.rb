@@ -3,6 +3,7 @@ class GameController < ApplicationController
 
   def show
     # TODO: put this somewhere else
+    # TODO: this explodes if game doesn't exist
     @game = Game.find(params[:id])
     # TODO very not DRY, find a nicer way to do this
     @word_progress = WordProgress.new(@game).call
