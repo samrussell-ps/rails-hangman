@@ -125,6 +125,14 @@ $(function(){
     $('#guess_form').submit()
   });
 
+  $('#navbar').on('show.bs.collapse', function(){
+    $('#keyboard-container').hide();
+  });
+
+  $('#navbar').on('hidden.bs.collapse', function(){
+    $('#keyboard-container').show();
+  });
+
   // tap to hide alerts
   $('.alert').click(function(){
     $(this).hide('slow');
