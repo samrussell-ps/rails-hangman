@@ -8,8 +8,6 @@ class GuessController < ApplicationController
   }
 
   def create
-    #Guess.new(params.permit(:game_id, :letter)).save
-    # TODO: handle when guess wasn't created
     MakeGuess.new(params[:game_id], params[:letter])
       .on(:letter_has_been_guessed) { route_to_game(alert: :letter_has_been_guessed) }
       .on(:game_does_not_exist) { route_to_game_index(alert: :game_does_not_exist) }

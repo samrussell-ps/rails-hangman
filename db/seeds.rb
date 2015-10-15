@@ -7,12 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
 #TODO: refactor
-require 'net/http'
-WORD_SOURCE_URI = 'http://www-01.sil.org/linguistics/wordlists/english/wordlist/wordsEn.txt'
-
-uri = URI.parse(WORD_SOURCE_URI)
-response = Net::HTTP.get_response(uri)
-words = response.body.split("\r\n")
+# wordlist obtained from http://www-01.sil.org/linguistics/wordlists/english/wordlist/wordsEn.txt
+wordlist_path = File.join(Rails.root, 'db', 'resources', 'wordlist.txt')
+wordlist = File.read(wordlist_path)
+words = wordlist.split("\r\n")
 
 ActiveRecord::Base.transaction do
   #words.each { |word| Word.find_or_create_by(word: word) }
