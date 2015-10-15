@@ -18,17 +18,9 @@ class GameController < ApplicationController
   end
 
   def new
-    # this is an HTML form to create the new object
-    # @game = Game.new
   end
 
   def create
-    # tell it to do a redirect or render
-    # if no error
-    # redirect_to @game
-    # else
-    # render :new *this will re-render if there are issues*
-    # end
     redirect_to MakeGame.new.call
   end
 
