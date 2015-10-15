@@ -113,7 +113,9 @@ bottom:0;
 
 <script>
   <!--
+
 $(function(){
+  // handle keyboard presses
   $('#keyboard li').click(function(){
     var $this = $(this),
     character = $this.children().first().html(); // If it's a lowercase letter, nothing happens to this variable
@@ -121,6 +123,11 @@ $(function(){
     // TODO make not yucky
     $('#letter').val(character)
     $('#guess_form').submit()
+  });
+
+  // tap to hide alerts
+  $('.alert').click(function(){
+    $(this).hide('slow');
   });
 });
 
@@ -132,12 +139,12 @@ $(function(){
 <% end %>
 <% if @game_status == :won %>
   <div class="alert alert-success">
-    <%= "Congratulations, you won!" %>
+    <%= "Congratulations, you won! The word was #{@game.word}" %>
   </div>
 <% end %>
 <% if @game_status == :lost %>
   <div class="alert alert-info">
-    <%= "You lost! The words was #{@game.word}" if @game_status == :lost %>
+    <%= "You lost! The word was #{@game.word}" if @game_status == :lost %>
   </div>
 <% end %>
 <p>Word progress: <%= @word_progress.map { |char| char ? char : '_'}.join ' ' %></p>
