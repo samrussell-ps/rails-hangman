@@ -19,7 +19,7 @@ RSpec.describe MakeGuess do
       allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
 
       expect(Guess).to receive(:create!).with(hash_including(game: game, letter: anything)).and_return(fake_guess)
-      expect(make_guess).to receive(:publish!).with(:guess_created, fake_guess)
+      expect(make_guess).to receive(:publish!).with(:guess_created)
 
       make_guess.call
     end
@@ -39,13 +39,13 @@ RSpec.describe MakeGuess do
   end
 
   context 'with an invalid guess' do
-    it 'shouts :invalid_guess' do
+    it 'shouts :guess_is_invalid' do
       allow(Game).to receive(:find_by).and_return(instance_double(Game))
       allow(GuessIsValid).to receive(:new).and_return(false_service)
       allow(GameComplete).to receive(:new).and_return(false_service)
       allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
 
-      expect(make_guess).to receive(:publish!).with(:invalid_guess)
+      expect(make_guess).to receive(:publish!).with(:guess_is_invalid)
 
       make_guess.call
     end

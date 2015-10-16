@@ -3,24 +3,22 @@ class MakeGuess
 
   def initialize(game_id, letter)
     @game_id = game_id
-    #TODO: test fail on not-string
     @uppercase_letter = letter.to_s.upcase
   end
 
   def call
     if game_does_not_exist?
       publish!(:game_does_not_exist)
-    # TODO: refactor these into private methods
     elsif guess_is_invalid?
-      publish!(:invalid_guess)
-    elsif GameComplete.new(game).call
+      publish!(:guess_is_invalid)
+    elsif game_is_complete?
       publish!(:game_complete)
-    elsif LetterHasBeenGuessed.new(game, @uppercase_letter).call
+    elsif letter_has_been_guessed?
       publish!(:letter_has_been_guessed)
     else
-      guess = Guess.create!(game: game, letter: @uppercase_letter)
-      #TODO don't pass guess
-      publish!(:guess_created, guess)
+      create_guess
+
+      publish!(:guess_created)
     end
   end
 
@@ -36,5 +34,17 @@ class MakeGuess
 
   def guess_is_invalid?
     !GuessIsValid.new(@uppercase_letter).call
+  end
+
+  def game_is_complete?
+    GameComplete.new(game).call
+  end
+
+  def letter_has_been_guessed?
+    LetterHasBeenGuessed.new(game, @uppercase_letter).call
+  end
+
+  def create_guess
+    Guess.create!(game: game, letter: @uppercase_letter)
   end
 end

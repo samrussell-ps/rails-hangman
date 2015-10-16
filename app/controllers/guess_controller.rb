@@ -4,7 +4,7 @@ class GuessController < ApplicationController
     letter_has_been_guessed: "That letter has already been guessed",
     game_does_not_exist: "That game does not exist",
     game_complete: "The game is over!",
-    invalid_guess: "Whoops, that guess was invalid"
+    guess_is_invalid: "Whoops, that guess was invalid"
   }
 
   def create
@@ -13,7 +13,7 @@ class GuessController < ApplicationController
       .on(:game_does_not_exist) { route_to_game_index(alert: :game_does_not_exist) }
       .on(:letter_has_been_guessed) { route_to_game(alert: :letter_has_been_guessed) }
       .on(:game_complete) { route_to_game(alert: :game_complete) }
-      .on(:invalid_guess) { route_to_game(alert: :invalid_guess) }
+      .on(:guess_is_invalid) { route_to_game(alert: :guess_is_invalid) }
       .on(:guess_created) { route_to_game }
       .call
   end

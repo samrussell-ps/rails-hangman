@@ -15,9 +15,9 @@ RSpec.describe GuessController, type: :controller do
         put :create, game_id: game.id # stuff
       end
 
-      it 'redirects to the game with alert invalid_guess' do
+      it 'redirects to the game with alert guess_is_invalid' do
         expect(response).to redirect_to controller: :game, action: :show, id: game.id
-        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:invalid_guess])
+        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:guess_is_invalid])
       end
     end
 
