@@ -8,6 +8,7 @@ class LivesLeft
 
   def call
     bad_guesses_count = BadGuesses.new(@game).call.size
+
     INITIAL_LIVES - bad_guesses_count
   end
 end

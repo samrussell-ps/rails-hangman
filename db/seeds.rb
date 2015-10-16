@@ -13,9 +13,17 @@ wordlist = File.read(wordlist_path)
 words = wordlist.split("\r\n")
 
 ActiveRecord::Base.transaction do
-  words.shuffle[0...8000].each do |word|
+  #TODO MAGIC NUMBERS ARE BAD
+  words.shuffle.first(8000).each do |word|
     safe_word = word.gsub(/[^a-zA-Z]/, '')
     Word.connection.execute "INSERT INTO words (word, created_at, updated_at) values ('#{safe_word}', '#{DateTime.now()}', '#{DateTime.now()}')"
+    #TODO: noSQL
+    #new_records = [
+    #  {:column => 'value', :column2 => 'value'}, 
+    #  {:column => 'value', :column2 => 'value'}
+    #]
+    #
+    #MyModel.create(new_records)
   end
 end
 

@@ -8,9 +8,10 @@ class GuessController < ApplicationController
   }
 
   def create
+    #TODO unhide route_to_game_index
     MakeGuess.new(params[:game_id], params[:letter])
-      .on(:letter_has_been_guessed) { route_to_game(alert: :letter_has_been_guessed) }
       .on(:game_does_not_exist) { route_to_game_index(alert: :game_does_not_exist) }
+      .on(:letter_has_been_guessed) { route_to_game(alert: :letter_has_been_guessed) }
       .on(:game_complete) { route_to_game(alert: :game_complete) }
       .on(:invalid_guess) { route_to_game(alert: :invalid_guess) }
       .on(:guess_created) { route_to_game }
@@ -20,16 +21,19 @@ class GuessController < ApplicationController
   private
   
   def route_to_game(alert: nil)
-    set_alert_message(alert: alert)
+    set_alert_message(alert)
+
     redirect_to controller: 'game', action: 'show', id: params[:game_id]
   end
 
   def route_to_game_index(alert: nil)
-    set_alert_message(alert: alert)
+    set_alert_message(alert)
+
     redirect_to controller: 'game', action: 'index'
   end
 
-  def set_alert_message(alert: nil)
+  def set_alert_message(alert)
+    #TODO ERROR_MESSAGES.fetch(alert, nil)
     flash[:alert] = ERROR_MESSAGES[alert] if alert
   end
 end

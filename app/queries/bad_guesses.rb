@@ -4,6 +4,7 @@ class BadGuesses
   end
 
   def call
-    @game.guesses.map{ |guess| guess.letter if @game.word.exclude?(guess.letter) }.compact
+    #TODO use LetterHasBeenGuessed
+    @game.guesses.pluck(:letter).select { |letter| @game.word.exclude?(letter) }
   end
 end

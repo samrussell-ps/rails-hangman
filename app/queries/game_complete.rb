@@ -1,17 +1,21 @@
+#TODO think about GameStatus
 class GameComplete
   def initialize(game)
     @game = game
   end
 
+  #TODO expose running/finished?, won?, and lost?
   def call
     game_finished?
   end
 
   def result
-    if game_finished?
-      game_won? ? :won : :lost
+    return :running unless game_finished?
+
+    if game_won?
+      :won
     else
-      :running
+      :lost
     end
   end
 
