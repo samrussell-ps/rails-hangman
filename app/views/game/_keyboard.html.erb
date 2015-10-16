@@ -1,0 +1,24 @@
+<% presenter = KeyboardPresenter.new(self) %>
+<div id="keyboard-container">
+  <ul id="keyboard">
+    <li class="topfiller-2"></li>
+    <li class="leftfiller-0"></li>
+    <% presenter.row(0).each do |letter| %>
+      <li class="letter"><span><%= letter %></span></li>
+    <% end %>
+    <li class="rightfiller"></li>
+
+    <li class="leftfiller-5"></li>
+    <% presenter.row(1).each do |letter| %>
+      <li class="letter"><span><%= letter %></span></li>
+    <% end %>
+    <li class="rightfiller"></li>
+
+    <li class="leftfiller-10"></li>
+    <% presenter.row(2).each do |letter| %>
+      <li class="letter"><span><%= letter %></span></li>
+    <% end %>
+    <li class="rightfiller"></li>
+  </ul>
+</div>
+
