@@ -1,4 +1,5 @@
 #TODO think about GameStatus
+#policy object? Rules?
 class GameComplete
   def initialize(game)
     @game = game

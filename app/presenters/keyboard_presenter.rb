@@ -1,3 +1,7 @@
+#Keyboard class
+#DRY up HTML with a helper
+#this is about the data for view/helper to display
+#renderer folder?
 class KeyboardPresenter
   KEYBOARD_ROWS = [
     %w[Q W E R T Y U I O P],

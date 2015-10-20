@@ -20,12 +20,15 @@ class GameController < ApplicationController
   end
 
   def create
-    redirect_to MakeGame.new.call
+    new_game = MakeGame.new.call
+
+    redirect_to new_game
   end
 
   private 
 
   def navbar
+    # TODO make a scope on Game
     @first_five_games = Game.order(id: :desc).limit(5)
   end
 end

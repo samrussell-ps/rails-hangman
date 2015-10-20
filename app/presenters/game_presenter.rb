@@ -15,13 +15,16 @@ class GamePresenter
   end
 
   def render_alert
+    #TODO use helpers for content_tag
     if @template.flash[:alert]
       @template.content_tag(:div, @template.flash[:alert], class: 'alert alert-danger')
     end
   end
 
   def render_game_status
-    @template.content_tag(:div, status_message(game_status), class: status_class(game_status))
+    if GameComplete.new(@game).call
+      @template.content_tag(:div, status_message(game_status), class: status_class(game_status))
+    end
   end
 
   def render_game_info
