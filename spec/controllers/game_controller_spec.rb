@@ -19,15 +19,21 @@ RSpec.describe GameController, type: :controller do
 
   # GET /game/1
   describe '#show' do
-    subject { response }
+    let(:id_of_game_that_does_not_exist) { 99999 }
 
     render_views
 
-    before do
+    it 'shows game when game exists' do
       get :show, id: game.id
+
+      expect(response).to render_template(:show)
     end
 
-    it { is_expected.to render_template(:show) }
+    it 'redirects to index when game does not exist' do
+      get :show, id: id_of_game_that_does_not_exist
+
+      expect(response).to redirect_to controller: :game, action: :index
+    end
   end
 
   # GET /game/new

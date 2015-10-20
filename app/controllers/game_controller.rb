@@ -2,14 +2,12 @@ class GameController < ApplicationController
   before_filter :navbar
 
   def show
-    # TODO: put this somewhere else
-    # TODO: this explodes if game doesn't exist
-    @game = Game.find(params[:id])
-    # TODO very not DRY, find a nicer way to do this
-    @word_progress = WordProgress.new(@game).call
-    @bad_guesses = BadGuesses.new(@game).call
-    @lives_left = LivesLeft.new(@game).call
-    @game_status = GameComplete.new(@game).result
+    game_id = params[:id]
+
+    @game = game_by_id(params[:id])
+
+    redirect_to controller: 'game', action: 'index' unless @game
+    @presenter = GamePresenter.new(@game)
   end
 
   def index
@@ -30,5 +28,9 @@ class GameController < ApplicationController
   def navbar
     # TODO make a scope on Game
     @first_five_games = Game.order(id: :desc).limit(5)
+  end
+
+  def game_by_id(game_id)
+    @game = Game.find_by(id: params[:id])
   end
 end

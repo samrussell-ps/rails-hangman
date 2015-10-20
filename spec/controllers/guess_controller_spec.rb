@@ -66,7 +66,7 @@ RSpec.describe GuessController, type: :controller do
       before do
         put :create, game_id: invalid_game_id, letter: 'A'
       end
-      it 'redirects to the game with alert game_complete' do
+      it 'redirects to the index with alert game does not exist' do
         expect(response).to redirect_to controller: :game, action: :index
         expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:game_does_not_exist])
       end

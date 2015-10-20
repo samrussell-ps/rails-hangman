@@ -1,12 +1,24 @@
-<% presenter = GamePresenter.new(@game, self) %>
+<% if flash[:alert] %>
+  <div class='alert alert-danger'>
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 
-<%= presenter.render_alert %>
+<% if @presenter.game_over? %>
+  <% if @presenter.game_won? %>
+    <div class='alert alert-success'>
+      Congratulations, you won! The word was <%= @presenter.word %>
+    </div>
+  <% else %>
+    <div class='alert alert-info'>
+      You lost :( The word was <%= @presenter.word %>
+    </div>
+  <% end %>
+<% end %>
 
-<%= presenter.render_game_status %>
-
-<p>Word progress: <%= @word_progress.map { |char| char ? char : '_'}.join ' ' %></p>
-<p>Bad guesses: <%= @bad_guesses.join ' ' %></p>
-<p>Lives left: <%= @lives_left %></p>
+<p>Word progress: <%= @presenter.word_progress %> </p>
+<p>Bad guesses: <%= @presenter.incorrect_guesses %> </p>
+<p>Lives left: <%= @presenter.lives_left %> </p>
 
 <%= render "form" %>
 
