@@ -1,6 +1,8 @@
 class Game < ActiveRecord::Base
   INITIAL_NUMBER_OF_LIVES = 9
 
+  include Shout
+
   has_many :guesses, dependent: :destroy
 
   validates :word, presence: true
@@ -10,6 +12,18 @@ class Game < ActiveRecord::Base
     with: /\A[A-Z]+\Z/,
     message: 'word must be a string of uppercase letters'
   }
+
+  # we use the arg "letter" a lot here
+  # can we make this betterer?
+  # this does need its own object to make shout work
+  def make_guess(letter)
+    if can_we_guess_this?(letter)
+      create_guess(letter)
+      publish!(:guess_created)
+    else
+      publish!(:guess_not_created, why_cant_we_guess_this(letter))
+    end
+  end
 
   def over?
     won? || lost?
@@ -40,7 +54,19 @@ class Game < ActiveRecord::Base
     guessed_letters.select { |letter| word.exclude?(letter) }
   end
 
+  def have_we_guessed?(letter)
+    guessed_letters.include?(letter)
+  end
+
   def guessed_letters
     guesses.pluck('letter')
+  end
+
+  def is_guess_valid?(letter)
+    letter.match(/\A[A-Z]\Z/).present?
+  end
+
+  def create_guess(letter)
+    guesses.create!(letter: letter)
   end
 end

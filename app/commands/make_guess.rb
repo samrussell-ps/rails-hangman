@@ -1,34 +1,60 @@
 class MakeGuess
   include Shout
 
-  def initialize(game_id, letter)
-    @game_id = game_id
-    @uppercase_letter = letter.to_s.upcase
+  def initialize(game, letter)
+    @game = game
+
+    @letter_in_uppercase = letter.to_s.upcase
   end
 
   def call
-    #TODO ask Policy object whether we can make the guess
-    #authentication etc
-    if game_does_not_exist?
-      publish!(:game_does_not_exist)
-    elsif guess_is_invalid?
-      publish!(:guess_is_invalid)
-    elsif game_is_complete?
-      publish!(:game_complete)
-    elsif letter_has_been_guessed?
-      publish!(:letter_has_been_guessed)
-    else
+    if can_we_guess_this?
       create_guess
 
       publish!(:guess_created)
+    else
+      publish!(:guess_not_created, reasons_why_we_cant_guess_this)
     end
   end
 
   private
 
+  def letter_to_guess
+    @letter_in_uppercase
+  end
+
+  def can_we_guess_this?
+    reasons_why_we_cant_guess_this.empty?
+  end
+
+  def reasons_why_we_cant_guess_this
+    @reasons_why_we_cant_guess_this ||= why_cant_we_guess_this
+  end
+
+  def why_cant_we_guess_this
+    @reasons_why_we_cant_guess_this = []
+
+    @reasons_why_we_cant_guess_this << :game_over if game_over?
+    @reasons_why_we_cant_guess_this << :letter_has_been_guessed if have_we_guessed_this?
+    @reasons_why_we_cant_guess_this << :guess_is_invalid unless is_guess_valid?
+
+    @reasons_why_we_cant_guess_this
+  end
+
+  def game_over?
+    game.over?
+  end
+
+  def have_we_guessed_this?
+    game.have_we_guessed?(letter_to_guess)
+  end
+
+  def is_guess_valid?
+    game.is_guess_valid?(letter_to_guess)
+  end
+
   def game
-    #TODO memoize @game ||=
-    Game.find_by(id: @game_id)
+    @game
   end
 
   def game_does_not_exist?
@@ -36,22 +62,18 @@ class MakeGuess
   end
 
   def guess_is_invalid?
-    #TODO make GuessIsInvalid as query
-    !GuessIsValid.new(@uppercase_letter).call
+    !game.is_guess_valid?(letter_to_guess)
   end
 
   def game_is_complete?
-    # policy
-    GameComplete.new(game).call
+    game.over?
   end
 
   def letter_has_been_guessed?
-    # policy
-    LetterHasBeenGuessed.new(game, @uppercase_letter).call
+    game.have_we_guessed?(letter_to_guess)
   end
 
   def create_guess
-    #TODO game.guesses.create
-    Guess.create!(game: game, letter: @uppercase_letter)
+    game.create_guess(letter_to_guess)
   end
 end

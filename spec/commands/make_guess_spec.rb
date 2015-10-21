@@ -1,79 +1,142 @@
 require 'rails_helper'
 
 RSpec.describe MakeGuess do
-  let(:guess) { '' }
-  let(:game) { Game.create!(word: 'WORD') }
-  let(:game_id) { game.id }
-  let(:make_guess) { MakeGuess.new(game_id, guess) }
-  let(:true_service) { Proc.new { true } }
-  let(:false_service) { Proc.new { false } }
-  subject(:call) { make_guess.call }
+  let(:word_to_guess) { 'BUCKET' }
+  let(:params) { { word: word_to_guess } }
+  let(:game) { Game.create!(params) }
+  let(:letter_to_guess) { nil }
+  let(:make_guess) { MakeGuess.new(game, letter_to_guess) }
+  let(:guesses_to_win) { %w[B U C K E T] }
+  let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
-  context 'with valid data and state' do
-    let(:fake_guess) { instance_double(Guess) }
+  describe '#call' do
+    context 'with letter A, no letters guessed' do
+      let(:letter_to_guess) { 'A' }
 
-    it 'shout :guess_created with a new guess' do
-      allow(Game).to receive(:find_by).and_return(game)
-      allow(GuessIsValid).to receive(:new).and_return(true_service)
-      allow(GameComplete).to receive(:new).and_return(false_service)
-      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+      it 'calls publish! with :guess_created' do
+        expect(make_guess).to receive(:publish!).with(:guess_created)
 
-      expect(Guess).to receive(:create!).with(hash_including(game: game, letter: anything)).and_return(fake_guess)
-      expect(make_guess).to receive(:publish!).with(:guess_created)
+        make_guess.call
+      end
 
-      make_guess.call
+      it 'creates a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_created)
+
+        expect { make_guess.call }.to change { game.guesses.size }.by(1)
+      end
     end
-  end
 
-  context 'with a non_existent game' do
-    it 'shouts :game_does_not_exist' do
-      allow(Game).to receive(:find_by).and_return(nil)
-      allow(GuessIsValid).to receive(:new).and_return(false_service)
-      allow(GameComplete).to receive(:new).and_return(false_service)
-      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+    context 'with letter a' do
+      let(:letter_to_guess) { 'a' }
 
-      expect(make_guess).to receive(:publish!).with(:game_does_not_exist)
+      it 'calls publish! with :guess_created' do
+        expect(make_guess).to receive(:publish!).with(:guess_created)
 
-      make_guess.call
+        make_guess.call
+      end
+
+      it 'creates a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_created)
+
+        expect { make_guess.call }.to change { game.guesses.size }.by(1)
+      end
     end
-  end
 
-  context 'with an invalid guess' do
-    it 'shouts :guess_is_invalid' do
-      allow(Game).to receive(:find_by).and_return(instance_double(Game))
-      allow(GuessIsValid).to receive(:new).and_return(false_service)
-      allow(GameComplete).to receive(:new).and_return(false_service)
-      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+    context 'with letter A, game over (won)' do
+      let(:letter_to_guess) { 'A' }
 
-      expect(make_guess).to receive(:publish!).with(:guess_is_invalid)
+      before do
+        guesses_to_win.each do |letter|
+          game.guesses.create(letter: letter)
+        end
+      end
 
-      make_guess.call
+      it 'calls publish! with :guess_not_created. [:game_over]' do
+        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:game_over))
+
+        make_guess.call
+      end
+
+      it 'does not create a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
+
+        expect { make_guess.call }.to_not change { game.guesses.size }
+      end
     end
-  end
 
-  context 'when the game is complete' do
-    it 'shouts :game_complete' do
-      allow(Game).to receive(:find_by).and_return(instance_double(Game))
-      allow(GuessIsValid).to receive(:new).and_return(true_service)
-      allow(GameComplete).to receive(:new).and_return(true_service)
-      allow(LetterHasBeenGuessed).to receive(:new).and_return(false_service)
+    context 'with letter A, game over (lost)' do
+      let(:letter_to_guess) { 'A' }
 
-      expect(make_guess).to receive(:publish!).with(:game_complete)
+      before do
+        guesses_to_lose.each do |letter|
+          game.guesses.create(letter: letter)
+        end
+      end
 
-      make_guess.call
+      it 'calls publish! with :guess_not_created. [:game_over]' do
+        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:game_over))
+
+        make_guess.call
+      end
+
+      it 'does not create a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
+
+        expect { make_guess.call }.to_not change { game.guesses.size }
+      end
     end
-  end
-  
-  context 'when the letter has already been guessed' do
-    it 'shouts :letter_has_been_guessed' do
-      allow(Game).to receive(:find_by).and_return(instance_double(Game))
-      allow(GuessIsValid).to receive(:new).and_return(true_service)
-      allow(GameComplete).to receive(:new).and_return(false_service)
-      allow(LetterHasBeenGuessed).to receive(:new).and_return(true_service)
 
-      expect(make_guess).to receive(:publish!).with(:letter_has_been_guessed)
+    context 'with letter A, letter has been guessed' do
+      let(:previous_guess) { 'A' }
+      let(:letter_to_guess) { 'A' }
 
-      make_guess.call
+      before do
+        game.guesses.create(letter: previous_guess)
+      end
+
+      it 'calls publish! with :guess_not_created. [:letter_has_been_guessed]' do
+        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:letter_has_been_guessed))
+
+        make_guess.call
+      end
+
+      it 'does not create a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
+
+        expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+    end
+
+    context 'with letter %' do
+      let(:letter_to_guess) { '%' }
+
+      it 'calls publish! with :guess_not_created. [:guess_is_invalid]' do
+        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:guess_is_invalid))
+
+        make_guess.call
+      end
+
+      it 'does not create a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
+
+        expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+    end
+
+    context 'with letter 2' do
+      let(:letter_to_guess) { '2' }
+
+      it 'calls publish! with :guess_not_created. [:guess_is_invalid]' do
+        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:guess_is_invalid))
+
+        make_guess.call
+      end
+
+      it 'does not create a new guess' do
+        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
+
+        expect { make_guess.call }.to_not change { game.guesses.size }
+      end
     end
   end
 end
