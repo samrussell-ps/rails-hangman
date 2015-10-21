@@ -1,9 +1,9 @@
 class GuessController < ApplicationController
-  #TODO: this lives in a presenter
+  # how do we pass something other than string through flash[]?
   ERROR_MESSAGES = {
     letter_has_been_guessed: "That letter has already been guessed",
     game_does_not_exist: "That game does not exist",
-    game_complete: "The game is over!",
+    game_over: "The game is over!",
     guess_is_invalid: "Whoops, that guess was invalid"
   }
 
@@ -18,11 +18,16 @@ class GuessController < ApplicationController
   private
 
   def make_guess
-    #game.make_guess(params[:letter])
-    MakeGuess.new(game, params[:letter])
-      .on(:guess_created) { route_to_game }
-      .on(:guess_not_created) { route_to_game }
-      .call
+    guess_maker = MakeGuess.new(game, letter_to_guess)
+
+    guess_maker.on(:guess_created) { route_to_game }
+    guess_maker.on(:guess_not_created) { |errors| route_to_game(errors) }
+    
+    guess_maker.call
+  end
+
+  def letter_to_guess
+    params[:letter]
   end
 
   def game_exists?
@@ -30,11 +35,12 @@ class GuessController < ApplicationController
   end
 
   def game
-    Game.find_by(params[:game_id])
+    @game ||= Game.find_by(id: params[:game_id])
   end
 
-  def route_to_game(alert: nil)
-    set_alert_message(alert)
+  def route_to_game(errors = [])
+    # just use the first alert
+    set_alert_message(errors.first) unless errors.empty?
 
     redirect_to controller: 'game', action: 'show', id: params[:game_id]
   end

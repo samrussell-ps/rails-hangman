@@ -2,12 +2,17 @@ class GameController < ApplicationController
   before_filter :navbar
 
   def show
-    game_id = params[:id]
+    redirect_to controller: 'game', action: 'index' unless game
 
-    @game = game_by_id(params[:id])
+    @presenter = GamePresenter.new(game)
+  end
 
-    redirect_to controller: 'game', action: 'index' unless @game
-    @presenter = GamePresenter.new(@game)
+  def game
+    @game = Game.find_by(id: game_id)
+  end
+
+  def game_id
+    params[:id]
   end
 
   def index
@@ -28,9 +33,5 @@ class GameController < ApplicationController
   def navbar
     # TODO make a scope on Game
     @first_five_games = Game.order(id: :desc).limit(5)
-  end
-
-  def game_by_id(game_id)
-    @game = Game.find_by(id: params[:id])
   end
 end

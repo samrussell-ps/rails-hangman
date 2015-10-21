@@ -22,8 +22,11 @@ class Game < ActiveRecord::Base
   end
 
   def have_all_the_letters_in_the_word_been_guessed?
-    # this feels yuck
-    correctly_guessed_letters.uniq.sort == word.chars.uniq.sort
+    unique_characters_in_word_to_be_guessed = word.chars.uniq.sort
+
+    unique_characters_in_word_to_be_guessed.all? do |character|
+      correctly_guessed_letters.include?(character)
+    end
   end
 
   def lost?
