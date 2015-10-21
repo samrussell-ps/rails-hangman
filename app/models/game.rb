@@ -13,18 +13,6 @@ class Game < ActiveRecord::Base
     message: 'word must be a string of uppercase letters'
   }
 
-  # we use the arg "letter" a lot here
-  # can we make this betterer?
-  # this does need its own object to make shout work
-  def make_guess(letter)
-    if can_we_guess_this?(letter)
-      create_guess(letter)
-      publish!(:guess_created)
-    else
-      publish!(:guess_not_created, why_cant_we_guess_this(letter))
-    end
-  end
-
   def over?
     won? || lost?
   end

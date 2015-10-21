@@ -3,8 +3,7 @@ class MakeGuess
 
   def initialize(game, letter)
     @game = game
-
-    @letter_in_uppercase = letter.to_s.upcase
+    @letter = letter
   end
 
   def call
@@ -20,7 +19,7 @@ class MakeGuess
   private
 
   def letter_to_guess
-    @letter_in_uppercase
+    @letter_in_uppercase ||= @letter.to_s.upcase
   end
 
   def can_we_guess_this?
@@ -55,22 +54,6 @@ class MakeGuess
 
   def game
     @game
-  end
-
-  def game_does_not_exist?
-    game.nil?
-  end
-
-  def guess_is_invalid?
-    !game.is_guess_valid?(letter_to_guess)
-  end
-
-  def game_is_complete?
-    game.over?
-  end
-
-  def letter_has_been_guessed?
-    game.have_we_guessed?(letter_to_guess)
   end
 
   def create_guess

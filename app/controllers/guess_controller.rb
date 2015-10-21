@@ -33,22 +33,6 @@ class GuessController < ApplicationController
     Game.find_by(params[:game_id])
   end
 
-  def can_we_make_this_guess?
-    true
-  end
-
-  def show_error
-    route_to_game
-  end
-
-  def show_game
-    route_to_game
-  end
-
-  def create_guess
-    game.guesses.create(letter: params[:letter])
-  end
-  
   def route_to_game(alert: nil)
     set_alert_message(alert)
 
