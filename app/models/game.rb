@@ -60,4 +60,8 @@ class Game < ActiveRecord::Base
   def create_guess(letter)
     guesses.create!(letter: letter)
   end
+
+  def self.first_five_games
+    order(id: :desc).limit(5)
+  end
 end

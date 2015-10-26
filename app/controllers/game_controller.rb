@@ -1,6 +1,4 @@
 class GameController < ApplicationController
-  before_filter :navbar
-
   def show
     redirect_to controller: 'game', action: 'index' unless game
 
@@ -26,12 +24,5 @@ class GameController < ApplicationController
     new_game = MakeGame.new.call
 
     redirect_to new_game
-  end
-
-  private 
-
-  def navbar
-    # TODO make a scope on Game
-    @first_five_games = Game.order(id: :desc).limit(5)
   end
 end

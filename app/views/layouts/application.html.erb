@@ -28,7 +28,7 @@
         <li class="dropdown">
         <a href="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resume game <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <% @first_five_games.each do |game| %>
+          <% Game.first_five_games.each do |game| %>
             <li><a href="/game/<%=game.id %>">Game <%=game.id %></a></li>
           <% end %>
         </ul>
