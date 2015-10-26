@@ -1,11 +1,14 @@
 $(function(){
   // handle keyboard presses
+  // TODO rely less on DOM
+  // #keyboard .key
+  // $(this).attr('letter') etc
   $('#keyboard li').click(function(){
-    var $this = $(this),
-    character = $this.children().first().html(); // If it's a lowercase letter, nothing happens to this variable
+    var character = $(this).children().first().html();
     // this is yucky
     // TODO make not yucky
     $('#letter').val(character)
+    // #(this).closest('form').submit() less reliant on DOM
     $('#guess_form').submit()
   });
 

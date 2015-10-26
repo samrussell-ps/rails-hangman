@@ -5,7 +5,7 @@ class Guess < ActiveRecord::Base
   validates :letter, format: {
     # TODO: make function for regex
     # use GuessIsValid?
-    with: /\A[A-Z]\Z/,
-    message: 'letter must be a single uppercase letter'
+    with: /\A[A-Z]\z/,
+    message: 'must be a single uppercase letter'
   }
 end

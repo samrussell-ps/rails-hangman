@@ -1,5 +1,6 @@
 class GuessController < ApplicationController
   # how do we pass something other than string through flash[]?
+  # TODO mock service, inject "test error string", assert string ends up in flash
   ERROR_MESSAGES = {
     letter_has_been_guessed: "That letter has already been guessed",
     game_does_not_exist: "That game does not exist",
@@ -35,6 +36,7 @@ class GuessController < ApplicationController
   end
 
   def game
+    # TODO this should be allowed to blow up, shouldn't handle quietly
     @game ||= Game.find_by(id: params[:game_id])
   end
 

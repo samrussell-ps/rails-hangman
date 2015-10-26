@@ -26,6 +26,10 @@ class GamePresenter
     @game.won?
   end
 
+  def game_lost?
+    @game.lost?
+  end
+
   def word
     @game.word
   end

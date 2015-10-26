@@ -8,9 +8,15 @@ class Game < ActiveRecord::Base
   validates :word, presence: true
   validates :word, format: {
     # TODO: make function for regex
+    # TODO: lowercase \z
     # use GuessIsValid?
-    with: /\A[A-Z]+\Z/,
-    message: 'word must be a string of uppercase letters'
+    with: /\A[A-Z]+\z/,
+    message: 'must be a string of uppercase letters'
+  }
+
+  scope :first_five_games, -> {
+    # TODO sort by created_at
+    order(id: :desc).limit(5)
   }
 
   def over?
@@ -59,9 +65,5 @@ class Game < ActiveRecord::Base
 
   def create_guess(letter)
     guesses.create!(letter: letter)
-  end
-
-  def self.first_five_games
-    order(id: :desc).limit(5)
   end
 end
