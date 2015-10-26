@@ -1,23 +1,25 @@
-<% # set @presenter in controller %>
-<% #TODO don't set self %>
-<% presenter = KeyboardPresenter.new(self) %>
+<%  keyboard_rows = [
+    %w[Q W E R T Y U I O P],
+    %w[A S D F G H J K L],
+    %w[Z X C V B N M]
+] %>
 <div id="keyboard-container">
   <ul id="keyboard">
     <li class="topfiller-2"></li>
     <li class="leftfiller-0"></li>
-    <% presenter.row(0).each do |letter| %>
+    <% keyboard_rows[0].each do |letter| %>
       <li class="letter"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
 
     <li class="leftfiller-5"></li>
-    <% presenter.row(1).each do |letter| %>
+    <% keyboard_rows[1].each do |letter| %>
       <li class="letter"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
 
     <li class="leftfiller-10"></li>
-    <% presenter.row(2).each do |letter| %>
+    <% keyboard_rows[2].each do |letter| %>
       <li class="letter"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
