@@ -10,7 +10,9 @@ words = wordlist.split("\r\n")
 
 words_to_load = words.shuffle.first(NUMBER_OF_WORDS_TO_LOAD)
 
-word_arguments = words_to_load.map { |word| { word: word } }
+valid_words_to_load = words_to_load.select { |word| word.match(/\A[A-Za-z]+\z/).present? }
+
+word_arguments = valid_words_to_load.map { |word| { word: word.upcase } }
 
 ActiveRecord::Base.transaction do
   Word.destroy_all

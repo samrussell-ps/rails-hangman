@@ -2,9 +2,9 @@ class Game < ActiveRecord::Base
   INITIAL_NUMBER_OF_LIVES = 9
 
   has_many :guesses, dependent: :destroy
+  has_one :word
 
   validates :word, presence: true
-  validates_with GameWordValidator
 
   scope :first_five_games, -> {
     order(created_at: :desc).limit(5)
@@ -19,7 +19,7 @@ class Game < ActiveRecord::Base
   end
 
   def have_all_the_letters_in_the_word_been_guessed?
-    unique_characters_in_word_to_be_guessed = word.chars.uniq.sort
+    unique_characters_in_word_to_be_guessed = word.word.chars.uniq.sort
 
     unique_characters_in_word_to_be_guessed.all? do |character|
       correctly_guessed_letters.include?(character)
@@ -35,11 +35,11 @@ class Game < ActiveRecord::Base
   end
 
   def correctly_guessed_letters
-    guessed_letters.select { |letter| word.include?(letter) }
+    guessed_letters.select { |letter| word.word.include?(letter) }
   end
 
   def incorrectly_guessed_letters
-    guessed_letters.select { |letter| word.exclude?(letter) }
+    guessed_letters.select { |letter| word.word.exclude?(letter) }
   end
 
   def have_we_guessed?(letter)

@@ -3,7 +3,6 @@ class ChooseRandomWord
     #TODO push to database
     # - scope on Word?
     # order words in db
-    #TODO do postgres locally
-    Word.all.sample.word
+    Word.all.sample
   end
 end

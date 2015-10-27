@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Game, type: :model do
   let(:params) { {} }
+  let(:word_to_guess) { Word.create!(word: 'BUCKET') }
   subject(:game) { Game.create(params) }
 
   context "game with no word" do
@@ -9,31 +10,12 @@ RSpec.describe Game, type: :model do
   end
 
   context "game with word in uppercase" do
-    let(:params) { { word: 'ABC' } }
+    let(:params) { { word: word_to_guess } }
 
     it { is_expected.to be_valid }
   end
 
-  context "game with word in lowercase" do
-    let(:params) { { word: 'abc' } }
-
-    it { is_expected.to_not be_valid }
-  end
-
-  context "game with word in mixed case" do
-    let(:params) { { word: 'AbC' } }
-
-    it { is_expected.to_not be_valid }
-  end
-
-  context "game with word with non-alpha characters" do
-    let(:params) { { word: 'E%B' } }
-
-    it { is_expected.to_not be_valid }
-  end
-
   describe '#correctly_guessed_letters' do
-    let(:word_to_guess) { 'BUCKET' }
     let(:params) { { word: word_to_guess } }
 
     subject(:correctly_guessed_letters) { game.correctly_guessed_letters }
@@ -68,7 +50,6 @@ RSpec.describe Game, type: :model do
   end
 
   describe '#incorrectly_guessed_letters' do
-    let(:word_to_guess) { 'BUCKET' }
     let(:params) { { word: word_to_guess } }
 
     subject(:incorrectly_guessed_letters) { game.incorrectly_guessed_letters }
@@ -103,7 +84,6 @@ RSpec.describe Game, type: :model do
   end
 
   describe '#over?' do
-    let(:word_to_guess) { 'BUCKET' }
     let(:params) { { word: word_to_guess } }
     let(:guesses_to_win) { %w[B U C K E T] }
     let(:guesses_to_lose) { %w[Z X V W N M L J H] }

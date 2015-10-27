@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GameController, type: :controller do
   let(:game_controller) { GameController.new }
-  let(:game) { Game.create!(word: 'BUCKET') }
+  let(:game) { Game.create!(word: Word.create!(word: 'BUCKET')) }
 
   # GET /game
   describe '#index' do

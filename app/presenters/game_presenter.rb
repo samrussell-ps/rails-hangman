@@ -4,7 +4,7 @@ class GamePresenter
   end
 
   def word_progress
-    @game.word.chars.map { |char|
+    @game.word.word.chars.map { |char|
       @game.correctly_guessed_letters.include?(char) ? char : '_'
     }
     .join(' ')
