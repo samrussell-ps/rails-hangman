@@ -19,10 +19,6 @@ class GuessController < ApplicationController
     params[:letter]
   end
 
-  def game_exists?
-    game.present?
-  end
-
   def game
     @game ||= Game.find(params[:game_id])
   end
