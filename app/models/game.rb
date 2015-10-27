@@ -1,8 +1,6 @@
 class Game < ActiveRecord::Base
   INITIAL_NUMBER_OF_LIVES = 9
 
-  include Shout
-
   has_many :guesses, dependent: :destroy
 
   validates :word, presence: true

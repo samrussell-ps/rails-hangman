@@ -7,8 +7,6 @@ class MakeGuess
 
   attr_reader :errors
 
-  include Shout
-
   def initialize(game, letter)
     @game = game
     @letter = letter
