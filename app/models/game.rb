@@ -6,17 +6,10 @@ class Game < ActiveRecord::Base
   has_many :guesses, dependent: :destroy
 
   validates :word, presence: true
-  validates :word, format: {
-    # TODO: make function for regex
-    # TODO: lowercase \z
-    # use GuessIsValid?
-    with: /\A[A-Z]+\z/,
-    message: 'must be a string of uppercase letters'
-  }
+  validates_with GameWordValidator
 
   scope :first_five_games, -> {
-    # TODO sort by created_at
-    order(id: :desc).limit(5)
+    order(created_at: :desc).limit(5)
   }
 
   def over?

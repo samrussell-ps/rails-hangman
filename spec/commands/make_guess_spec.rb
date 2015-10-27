@@ -10,35 +10,33 @@ RSpec.describe MakeGuess do
   let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
   describe '#call' do
+    subject(:call) { make_guess.call }
+
     context 'with letter A, no letters guessed' do
       let(:letter_to_guess) { 'A' }
 
-      it 'calls publish! with :guess_created' do
-        expect(make_guess).to receive(:publish!).with(:guess_created)
-
-        make_guess.call
-      end
+      it { is_expected.to be true }
 
       it 'creates a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_created)
-
         expect { make_guess.call }.to change { game.guesses.size }.by(1)
+      end
+
+      it 'does not set error' do
+        expect(make_guess.errors).to eq([])
       end
     end
 
     context 'with letter a' do
       let(:letter_to_guess) { 'a' }
 
-      it 'calls publish! with :guess_created' do
-        expect(make_guess).to receive(:publish!).with(:guess_created)
-
-        make_guess.call
-      end
+      it { is_expected.to be true }
 
       it 'creates a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_created)
-
         expect { make_guess.call }.to change { game.guesses.size }.by(1)
+      end
+
+      it 'does not set error' do
+        expect(make_guess.errors).to eq([])
       end
     end
 
@@ -51,16 +49,14 @@ RSpec.describe MakeGuess do
         end
       end
 
-      it 'calls publish! with :guess_not_created. [:game_over]' do
-        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:game_over))
-
-        make_guess.call
-      end
+      it { is_expected.to be false }
 
       it 'does not create a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
-
         expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+
+      it 'sets "game over" error' do
+        expect(make_guess.errors).to contain_exactly(MakeGuess::ERROR_MESSAGES[:game_over])
       end
     end
 
@@ -73,16 +69,14 @@ RSpec.describe MakeGuess do
         end
       end
 
-      it 'calls publish! with :guess_not_created. [:game_over]' do
-        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:game_over))
-
-        make_guess.call
-      end
+      it { is_expected.to be false }
 
       it 'does not create a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
-
         expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+
+      it 'sets "game over" error' do
+        expect(make_guess.errors).to contain_exactly(MakeGuess::ERROR_MESSAGES[:game_over])
       end
     end
 
@@ -94,48 +88,42 @@ RSpec.describe MakeGuess do
         game.guesses.create(letter: previous_guess)
       end
 
-      it 'calls publish! with :guess_not_created. [:letter_has_been_guessed]' do
-        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:letter_has_been_guessed))
-
-        make_guess.call
-      end
+      it { is_expected.to be false }
 
       it 'does not create a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
-
         expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+
+      it 'sets "letter has been guessed" error' do
+        expect(make_guess.errors).to contain_exactly(MakeGuess::ERROR_MESSAGES[:letter_has_been_guessed])
       end
     end
 
     context 'with letter %' do
       let(:letter_to_guess) { '%' }
 
-      it 'calls publish! with :guess_not_created. [:guess_is_invalid]' do
-        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:guess_is_invalid))
-
-        make_guess.call
-      end
+      it { is_expected.to be false }
 
       it 'does not create a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
-
         expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+
+      it 'sets "guess is invalid" error' do
+        expect(make_guess.errors).to contain_exactly(MakeGuess::ERROR_MESSAGES[:guess_is_invalid])
       end
     end
 
     context 'with letter 2' do
       let(:letter_to_guess) { '2' }
 
-      it 'calls publish! with :guess_not_created. [:guess_is_invalid]' do
-        expect(make_guess).to receive(:publish!).with(:guess_not_created, array_including(:guess_is_invalid))
-
-        make_guess.call
-      end
+      it { is_expected.to be false }
 
       it 'does not create a new guess' do
-        allow(make_guess).to receive(:publish!).with(:guess_not_created, anything)
-
         expect { make_guess.call }.to_not change { game.guesses.size }
+      end
+
+      it 'sets "guess is invalid" error' do
+        expect(make_guess.errors).to contain_exactly(MakeGuess::ERROR_MESSAGES[:guess_is_invalid])
       end
     end
   end

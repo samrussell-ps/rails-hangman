@@ -9,10 +9,6 @@ class GameController < ApplicationController
     @game = Game.find_by(id: game_id)
   end
 
-  def game_id
-    params[:id]
-  end
-
   def index
     @games = Game.all
   end
@@ -24,5 +20,11 @@ class GameController < ApplicationController
     new_game = MakeGame.new.call
 
     redirect_to new_game
+  end
+
+  private
+
+  def game_id
+    params[:id]
   end
 end

@@ -10,23 +10,19 @@ RSpec.describe GuessController, type: :controller do
 
     render_views
 
-    context 'with game_id = 1, no guess' do
+    context 'with valid game, MakeGuess has no errors' do
+      let(:mock_make_guess) { instance_double("MakeGuess") }
+
       before do
-        put :create, game_id: game.id 
+        allow(MakeGuess).to receive(:new).and_return(mock_make_guess)
+        allow(mock_make_guess).to receive(:call).and_return(true)
+        allow(mock_make_guess).to receive(:errors).and_return([])
       end
 
-      it 'redirects to the game with alert guess_is_invalid' do
-        expect(response).to redirect_to controller: :game, action: :show, id: game.id
-        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:guess_is_invalid])
-      end
-    end
+      it 'calls MakeGuess.new.call' do
+        expect(mock_make_guess).to receive(:call).and_return(true)
 
-    context 'with valid game, letter = "A"' do
-
-      it 'makes a new guess' do
-        expect {
-          put :create, game_id: game.id, letter: 'A'
-        }.to change(Guess, :count).by(1)
+        put :create, game_id: game.id, letter: 'A'
       end
 
       it 'redirects to the game with no flash' do
@@ -36,44 +32,35 @@ RSpec.describe GuessController, type: :controller do
       end
     end
 
-    context 'with valid game, letter has already been guessed' do
+    context 'with valid game, MakeGuess has one error' do
+      let(:mock_make_guess) { instance_double("MakeGuess") }
+      let(:expected_error_message) { "DANGER WILL ROBINSON" }
+
       before do
-        game.guesses.create!(letter: 'A')
+        allow(MakeGuess).to receive(:new).and_return(mock_make_guess)
+        allow(mock_make_guess).to receive(:call).and_return(false)
+        allow(mock_make_guess).to receive(:errors).and_return([expected_error_message])
+      end
+
+      it 'calls MakeGuess.new.call' do
+        expect(mock_make_guess).to receive(:call).and_return(false)
 
         put :create, game_id: game.id, letter: 'A'
       end
 
-      it 'redirects to the game with alert letter_has_been_guessed' do
-        expect(response).to redirect_to controller: :game, action: :show, id: game.id
-        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:letter_has_been_guessed])
-      end
-    end
-
-    context 'with valid game, game is finished' do
-      let(:guesses_to_win) { %w( B U C K E T) }
-
-      before do
-        guesses_to_win.each do |letter|
-          game.guesses.create!(letter: letter)
-        end
-
+      it 'redirects to the game with flash' do
         put :create, game_id: game.id, letter: 'A'
-      end
-      it 'redirects to the game with alert game_over' do
+
         expect(response).to redirect_to controller: :game, action: :show, id: game.id
-        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:game_over])
+        expect(flash[:alert]).to eq(expected_error_message)
       end
     end
 
     context 'with invalid game, valid guess' do
       let(:invalid_game_id) { 99999 }
 
-      before do
-        put :create, game_id: invalid_game_id, letter: 'A'
-      end
-      it 'redirects to the index with alert game does not exist' do
-        expect(response).to redirect_to controller: :game, action: :index
-        expect(flash[:alert]).to eq(GuessController::ERROR_MESSAGES[:game_does_not_exist])
+      it 'explodes with great prejudice' do
+        expect { put :create, game_id: invalid_game_id, letter: 'A' }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
