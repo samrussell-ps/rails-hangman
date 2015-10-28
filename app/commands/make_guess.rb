@@ -13,18 +13,13 @@ class MakeGuess
   end
 
   def call
-    if can_we_guess_this?
-      create_guess
-
-      true
-    else
-    end
+    create_guess if can_we_guess_this?
 
     errors.empty?
   end
 
   def errors
-    @errors||= why_cant_we_guess_this
+    @errors ||= why_cant_we_guess_this
   end
 
   private
