@@ -17,7 +17,7 @@ class GameController < ApplicationController
   end
 
   def create
-    new_game = MakeGame.new.call
+    new_game = CreateGame.new.call
 
     redirect_to new_game
   end

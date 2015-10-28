@@ -1,5 +1,4 @@
-#TODO CreateGame, Create has meaning, Make doesn't
-class MakeGame
+class CreateGame
   def call
     word = ChooseRandomWord.new.next_word
     Game.create!(words: [word])
