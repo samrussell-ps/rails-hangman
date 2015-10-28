@@ -6,13 +6,15 @@ class GuessController < ApplicationController
   private
 
   def make_guess
-    guess_maker = MakeGuess.new(game, letter_to_guess)
-
     guess_maker.call
 
-    set_errors(guess_maker.errors.first) unless guess_maker.errors.empty?
+    set_errors
 
     route_to_game
+  end
+
+  def guess_maker
+    @guess_maker ||= MakeGuess.new(game, letter_to_guess)
   end
 
   def letter_to_guess
@@ -23,8 +25,8 @@ class GuessController < ApplicationController
     @game ||= Game.find(params[:game_id])
   end
 
-  def set_errors(errors)
-    flash[:alert] = errors
+  def set_errors
+    flash[:alert] = guess_maker.errors.first unless guess_maker.errors.empty?
   end
 
   def route_to_game
