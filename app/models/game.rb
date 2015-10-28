@@ -4,7 +4,6 @@ class Game < ActiveRecord::Base
   has_many :guesses, dependent: :destroy
   belongs_to :word
 
-  # validate that there is only one
   validates :word, presence: true
 
   scope :first_five_games, -> {
