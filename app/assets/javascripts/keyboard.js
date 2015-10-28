@@ -1,15 +1,8 @@
 $(document).on('page:change', function(){
-  // handle keyboard presses
-  // TODO rely less on DOM
-  // #keyboard .key
-  // $(this).attr('letter') etc
-  $('#keyboard li').click(function(){
-    var character = $(this).children().first().html();
-    // this is yucky
-    // TODO make not yucky
+  $('#keyboard .key').click(function(){
+    var character = $(this).attr('letter');
     $('#letter').val(character)
-    // #(this).closest('form').submit() less reliant on DOM
-    $('#guess_form').submit()
+    $(this).closest('form').submit();
   });
 
   $('#navbar').on('show.bs.collapse', function(){
@@ -20,7 +13,6 @@ $(document).on('page:change', function(){
     $('#keyboard-container').show();
   });
 
-  // tap to hide alerts
   $('.alert').click(function(){
     $(this).hide('slow');
   });

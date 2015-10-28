@@ -3,26 +3,29 @@
     %w[A S D F G H J K L],
     %w[Z X C V B N M]
 ] %>
+<%= form_tag({controller: 'guess', action: 'create', game_id: @game.id}, method: 'post', remote: false) do %>
 <div id="keyboard-container">
   <ul id="keyboard">
     <li class="topfiller-2"></li>
     <li class="leftfiller-0"></li>
     <% keyboard_rows[0].each do |letter| %>
-      <li class="letter"><span><%= letter %></span></li>
+      <li class="key" letter="<%= letter %>"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
 
     <li class="leftfiller-5"></li>
     <% keyboard_rows[1].each do |letter| %>
-      <li class="letter"><span><%= letter %></span></li>
+      <li class="key" letter="<%= letter %>"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
 
     <li class="leftfiller-10"></li>
     <% keyboard_rows[2].each do |letter| %>
-      <li class="letter"><span><%= letter %></span></li>
+      <li class="key" letter="<%= letter %>"><span><%= letter %></span></li>
     <% end %>
     <li class="rightfiller"></li>
   </ul>
 </div>
+  <%= hidden_field_tag(:letter) %>
+<% end %>
 

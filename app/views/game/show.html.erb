@@ -20,8 +20,6 @@
 <p>Bad guesses: <%= @presenter.incorrect_guesses %> </p>
 <p>Lives left: <%= @presenter.lives_left %> </p>
 
-<%= render "form" %>
-
 <% content_for :body do %>
   <%= render "keyboard" %>
 <% end %>
