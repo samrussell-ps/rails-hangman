@@ -1,4 +1,4 @@
-$(function(){
+$(document).on('page:change', function(){
   // handle keyboard presses
   // TODO rely less on DOM
   // #keyboard .key
