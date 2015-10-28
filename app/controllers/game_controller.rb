@@ -5,10 +5,6 @@ class GameController < ApplicationController
     @presenter = GamePresenter.new(game)
   end
 
-  def game
-    @game = Game.find_by(id: game_id)
-  end
-
   def index
     @games = Game.all
   end
@@ -23,6 +19,10 @@ class GameController < ApplicationController
   end
 
   private
+
+  def game
+    @game = Game.find_by(id: game_id)
+  end
 
   def game_id
     params[:id]
