@@ -12,7 +12,7 @@ class Game < ActiveRecord::Base
   }
 
   def word
-    words.first
+    words.first.word
   end
 
   def over?
@@ -24,7 +24,7 @@ class Game < ActiveRecord::Base
   end
 
   def have_all_the_letters_in_the_word_been_guessed?
-    unique_characters_in_word_to_be_guessed = word.word.chars.uniq.sort
+    unique_characters_in_word_to_be_guessed = word.chars.uniq.sort
 
     unique_characters_in_word_to_be_guessed.all? do |character|
       correctly_guessed_letters.include?(character)
@@ -40,11 +40,11 @@ class Game < ActiveRecord::Base
   end
 
   def correctly_guessed_letters
-    guessed_letters.select { |letter| word.word.include?(letter) }
+    guessed_letters.select { |letter| word.include?(letter) }
   end
 
   def incorrectly_guessed_letters
-    guessed_letters.select { |letter| word.word.exclude?(letter) }
+    guessed_letters.select { |letter| word.exclude?(letter) }
   end
 
   def have_we_guessed?(letter)
