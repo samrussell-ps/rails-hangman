@@ -2,13 +2,18 @@ class Game < ActiveRecord::Base
   INITIAL_NUMBER_OF_LIVES = 9
 
   has_many :guesses, dependent: :destroy
-  has_one :word
+  has_and_belongs_to_many :words
 
-  validates :word, presence: true
+  # validate that there is only one
+  validates :words, presence: true
 
   scope :first_five_games, -> {
     order(created_at: :desc).limit(5)
   }
+
+  def word
+    words.first
+  end
 
   def over?
     won? || lost?

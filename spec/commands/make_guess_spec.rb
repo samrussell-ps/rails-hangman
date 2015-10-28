@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MakeGuess do
   let(:word_to_guess) { Word.create!(word: 'BUCKET') }
-  let(:params) { { word: word_to_guess } }
+  let(:params) { { words: [word_to_guess] } }
   let(:game) { Game.create!(params) }
   let(:letter_to_guess) { nil }
   let(:make_guess) { MakeGuess.new(game, letter_to_guess) }

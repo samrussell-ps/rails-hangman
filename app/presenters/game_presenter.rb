@@ -31,6 +31,6 @@ class GamePresenter
   end
 
   def word
-    @game.word
+    @game.word.word
   end
 end

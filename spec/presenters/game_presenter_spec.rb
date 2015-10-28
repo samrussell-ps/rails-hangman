@@ -7,7 +7,7 @@ RSpec.describe GamePresenter do
 
   context 'with word BUCKET' do
     let(:word_to_guess) { Word.create!(word: 'BUCKET') }
-    let(:params) { { word: word_to_guess } }
+    let(:params) { { words: [word_to_guess] } }
 
     describe '#word_progress' do
       subject(:word_progress) { game_presenter.word_progress }
@@ -202,7 +202,7 @@ RSpec.describe GamePresenter do
     describe '#word' do
       subject(:word) { game_presenter.word }
 
-      it { is_expected.to eq word_to_guess }
+      it { is_expected.to eq word_to_guess.word }
     end
   end
 end
