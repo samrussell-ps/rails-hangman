@@ -1,8 +1,5 @@
 class ChooseRandomWord
   def next_word
-    #TODO push to database
-    # - scope on Word?
-    # order words in db
-    Word.all.sample
+    Word.order("RANDOM()").first
   end
 end
