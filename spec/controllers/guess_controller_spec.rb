@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GuessController, type: :controller do
   let(:true_service) { Proc.new { true } }
   let(:false_service) { Proc.new { false } }
-  let(:game) { Game.create!(words: [Word.create!(word: 'BUCKET')]) }
+  let(:game) { Game.create!(word: Word.create!(word: 'BUCKET')) }
 
   describe 'PUT /game/1/guess' do
     subject { response }
