@@ -1,6 +1,8 @@
 class GuessController < ApplicationController
   def create
     make_guess
+
+    route_to_game
   end
 
   private
@@ -9,8 +11,6 @@ class GuessController < ApplicationController
     guess_maker.call
 
     set_errors
-
-    route_to_game
   end
 
   def guess_maker

@@ -35,15 +35,11 @@ class MakeGuess
   def why_cant_we_guess_this
     reasons_why_we_cant_guess_this = []
 
-    reasons_why_we_cant_guess_this << ERROR_MESSAGES[:game_over] if game_over?
+    reasons_why_we_cant_guess_this << ERROR_MESSAGES[:game_over] if game.over?
     reasons_why_we_cant_guess_this << ERROR_MESSAGES[:letter_has_been_guessed] if have_we_guessed_this?
     reasons_why_we_cant_guess_this << ERROR_MESSAGES[:guess_is_invalid] unless is_guess_valid?
 
     reasons_why_we_cant_guess_this
-  end
-
-  def game_over?
-    game.over?
   end
 
   def have_we_guessed_this?

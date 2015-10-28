@@ -88,7 +88,7 @@ RSpec.describe Game, type: :model do
     let(:guesses_to_win) { %w[B U C K E T] }
     let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
-    subject(:incorrectly_guessed_letters) { game.over? }
+    subject(:over?) { game.over? }
 
     context 'with no guesses' do
       it { is_expected.to be false }
