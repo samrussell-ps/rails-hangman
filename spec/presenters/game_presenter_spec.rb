@@ -106,11 +106,11 @@ RSpec.describe GamePresenter do
       end
     end
 
-    describe '#game_over?' do
+    describe '#over?' do
       let(:guesses_to_win) { %w[B U C K E T] }
       let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
-      subject(:game_over?) { game_presenter.game_over? }
+      subject(:over?) { game_presenter.over? }
 
       context 'with no guesses' do
         it { is_expected.to be false }
@@ -141,7 +141,7 @@ RSpec.describe GamePresenter do
       let(:guesses_to_win) { %w[B U C K E T] }
       let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
-      subject(:game_won?) { game_presenter.game_won? }
+      subject(:game_won?) { game_presenter.won? }
 
       context 'with no guesses' do
         it { is_expected.to be false }
@@ -168,11 +168,11 @@ RSpec.describe GamePresenter do
       end
     end
 
-    describe '#game_lost?' do
+    describe '#lost?' do
       let(:guesses_to_win) { %w[B U C K E T] }
       let(:guesses_to_lose) { %w[Z X V W N M L J H] }
 
-      subject(:game_lost?) { game_presenter.game_lost? }
+      subject(:lost?) { game_presenter.lost? }
 
       context 'with no guesses' do
         it { is_expected.to be false }
@@ -200,7 +200,7 @@ RSpec.describe GamePresenter do
     end
 
     describe '#word' do
-      subject(:word) { game_presenter.word }
+      subject(:word) { game_presenter.word_to_guess }
 
       it { is_expected.to eq word_to_guess.word }
     end

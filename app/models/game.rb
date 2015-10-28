@@ -57,4 +57,8 @@ class Game < ActiveRecord::Base
   def create_guess(letter)
     guesses.create!(letter: letter)
   end
+
+  def word_to_guess
+    word.word
+  end
 end

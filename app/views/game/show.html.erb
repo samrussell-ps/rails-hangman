@@ -4,14 +4,14 @@
   </div>
 <% end %>
 
-<% if @presenter.game_over? %>
-  <% if @presenter.game_won? %>
+<% if @presenter.over? %>
+  <% if @presenter.won? %>
     <div class='alert alert-success'>
-      Congratulations, you won! The word was <%= @presenter.word %>
+      Congratulations, you won! The word was <%= @presenter.word_to_guess %>
     </div>
   <% else %>
     <div class='alert alert-info'>
-      You lost :( The word was <%= @presenter.word %>
+      You lost :( The word was <%= @presenter.word_to_guess %>
     </div>
   <% end %>
 <% end %>
