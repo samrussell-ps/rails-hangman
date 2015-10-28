@@ -5,8 +5,6 @@ class MakeGuess
     guess_is_invalid: "Whoops, that guess was invalid"
   }
 
-  attr_reader :errors
-
   def initialize(game, letter)
     @game = game
     @letter = letter
