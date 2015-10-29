@@ -1,4 +1,4 @@
-class MakeGuess
+class MakeGuess #TODO submit vs make
   ERROR_MESSAGES = {
     letter_has_been_guessed: "That letter has already been guessed",
     game_over: "The game is over!",
@@ -11,6 +11,8 @@ class MakeGuess
   end
 
   def call
+    # TODO ? method shouldn't change state, only inspecting
+    # check_if_guess_can_be_made
     create_guess if can_we_guess_this?
 
     errors.empty?
@@ -26,6 +28,7 @@ class MakeGuess
     @letter_in_uppercase ||= @letter.to_s.upcase
   end
 
+  # TODO "we" and "this" are bad, reword
   def can_we_guess_this?
     errors.empty?
   end

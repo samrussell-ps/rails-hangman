@@ -1,3 +1,5 @@
+require 'set'
+
 class Game < ActiveRecord::Base
   INITIAL_NUMBER_OF_LIVES = 9
 
@@ -16,14 +18,6 @@ class Game < ActiveRecord::Base
 
   def won?
     have_all_the_letters_in_the_word_been_guessed?
-  end
-
-  def have_all_the_letters_in_the_word_been_guessed?
-    unique_characters_in_word_to_be_guessed = word_to_guess.chars.uniq
-
-    unique_characters_in_word_to_be_guessed.all? do |character|
-      correctly_guessed_letters.include?(character)
-    end
   end
 
   def lost?
@@ -46,10 +40,6 @@ class Game < ActiveRecord::Base
     guessed_letters.include?(letter)
   end
 
-  def guessed_letters
-    guesses.pluck('letter')
-  end
-
   def is_guess_valid?(letter)
     letter.match(/\A[A-Z]\z/).present?
   end
@@ -60,5 +50,15 @@ class Game < ActiveRecord::Base
 
   def word_to_guess
     word.word
+  end
+
+  private
+
+  def have_all_the_letters_in_the_word_been_guessed?
+    Set.new(word_to_guess.chars) == Set.new(correctly_guessed_letters)
+  end
+
+  def guessed_letters
+    guesses.pluck('letter')
   end
 end
